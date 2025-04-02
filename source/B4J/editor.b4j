@@ -1,0 +1,105 @@
+﻿AppType=JavaFX
+Build1=Default,b4j.example
+File1=arrow.png
+File10=minus.png
+File11=minus-square-line-icon.png
+File12=plus.png
+File13=plus-square-line-icon.png
+File14=RightMessageLog.bjl
+File15=RightProperties.bjl
+File16=RightSide.bjl
+File2=bootstrap.bundle.min.js
+File3=bootstrap.min.css
+File4=Center.bjl
+File5=demo.html
+File6=jquery-3.7.1.min.js
+File7=LeftSide.bjl
+File8=ListItemView.bjl
+File9=MainPage.bjl
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup13=Default Group
+FileGroup14=SectionLayout
+FileGroup15=SectionLayout
+FileGroup16=SectionLayout
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=SectionLayout
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=SectionLayout
+FileGroup8=SectionLayout
+FileGroup9=Main Layout
+Group=Default Group
+Library1=b4xpages
+Library10=xui views
+Library2=b4xpreferencesdialog
+Library3=codemirrorwrapper
+Library4=jcore
+Library5=jfx
+Library6=jserver
+Library7=json
+Library8=minihtml
+Library9=xcustomlistview
+Module1=|relative|..\B4XMainPage
+Module2=CLVTree
+Module3=IndexWebHandler
+NumberOfFiles=16
+NumberOfLibraries=10
+NumberOfModules=3
+Version=10.2
+@EndOfDesignText@
+#Region Project Attributes 
+	#MainFormWidth: 1280
+	#MainFormHeight: 720 
+#End Region
+
+Sub Process_Globals
+	Private fx As JFX
+	Private xui As XUI
+	Private MainForm As Form
+End Sub
+
+Sub AppStart (Form1 As Form, Args() As String)
+	MainForm = Form1
+	MainForm.SetFormStyle("DECORATED")
+	MainForm.WindowLeft = 0
+	MainForm.WindowTop = 0
+	MainForm.WindowWidth = fx.PrimaryScreen.MaxX - fx.PrimaryScreen.MinX '1280
+	MainForm.WindowHeight = fx.PrimaryScreen.MaxY - fx.PrimaryScreen.MinY '740
+	MainForm.Show
+	xui.SetDataFolder("CodeMirrorWrapper")
+	Dim PagesManager As B4XPagesManager
+	PagesManager.Initialize(MainForm)
+	Dim srvr As Server
+	srvr.Initialize("")
+	srvr.Port = 8080
+	srvr.AddHandler("", "IndexWebHandler", True)
+	srvr.StaticFilesFolder = File.Combine(File.DirApp, "www")
+	srvr.Start
+End Sub
+
+'Template version: B4J-1.0
+#Region Delegates
+Sub MainForm_FocusChanged (HasFocus As Boolean)
+	B4XPages.Delegate.MainForm_FocusChanged(HasFocus)
+End Sub
+
+Sub MainForm_Resize (Width As Double, Height As Double)
+	B4XPages.Delegate.MainForm_Resize(Width, Height)
+End Sub
+
+Sub MainForm_Closed
+	B4XPages.Delegate.MainForm_Closed
+End Sub
+
+Sub MainForm_CloseRequest (EventData As Event)
+	B4XPages.Delegate.MainForm_CloseRequest(EventData)
+End Sub
+
+Public Sub MainForm_IconifiedChanged (Iconified As Boolean)
+	B4XPages.Delegate.MainForm_IconifiedChanged(Iconified)
+End Sub
+#End Region
