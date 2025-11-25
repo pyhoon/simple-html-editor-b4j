@@ -219,12 +219,12 @@ Private Sub GrowTree2
 	head1.linkCss("styles/bootstrap.min.css")
 	'head1.linkCss("https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css")
 	Dim body1 As Tag = Body.up(html1)
-	Dim div1 As Tag = DIV.addClass("container mt-5").up(body1)
+	Dim div1 As Tag = Div.cls("container mt-5").up(body1)
 	Dim form1 As Tag = Form.up(div1)
-	Dim div2 As Tag = DIV.addClass("mb-3").up(form1)
-	Dim lbl1 As Tag = Label.forId("exampleInput").addClass("form-label").Text("Enter something").up(div2)
-	Dim input1 As Tag = Input.addType("text").addClass("form-control").addId("exampleInput").attribute("placeholder", "Type here...").up(div2)
-	Dim button1 As Tag = Button.addType("button").addClass("btn btn-primary mt-3").addId("showToast").Text("Submit").up(form1)
+	Dim div2 As Tag = Div.cls("mb-3").up(form1)
+	Dim lbl1 As Tag = Label.forId("exampleInput").cls("form-label").Text("Enter something").up(div2)
+	Dim input1 As Tag = Input.typeOf("text").cls("form-control").id("exampleInput").attr("placeholder", "Type here...").up(div2)
+	Dim button1 As Tag = Button.typeOf("button").cls("btn btn-primary mt-3").id("showToast").Text("Submit").up(form1)
 	body1.newline
 	body1.comment(" Toast Notification ")
 	
@@ -240,21 +240,19 @@ Private Sub GrowTree2
             </div>
         </div>
     </div>"$
-	Dim node1 As HtmlNode = HtmlParser.Parse(toast)
-	If node1.IsInitialized Then
+'	Dim node1 As HtmlNode = HtmlParser.Parse(toast)
+'	If node1.IsInitialized Then
 '		For Each att As HtmlAttribute In node1.Children.Get(0).As(HtmlNode).Attributes
 '			Log($"${att.Key}: ${att.Value.Trim}"$)
 '		Next
-		Dim toast1 As Tag = ConvertTagNodeToTag(node1)
+		Dim toast1 As Tag = Html.Parse(toast) ' ConvertTagNodeToTag(node1)
 		'Log(toast1.build)
 		toast1.up(body1)
-	End If
+'	End If
 
 	body1.newline
-	Dim script1 As Tag = Head.script("js/jquery-3.7.1.min.js").up(body1)
-	Dim script2 As Tag = Head.script("js/bootstrap.bundle.min.js").up(body1)
-	'Dim script1 As Tag = Head.script("https://code.jquery.com/jquery-3.7.1.min.js").up(body1)
-	'Dim script2 As Tag = Head.script("https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js").up(body1)
+	Dim script1 As Tag = Html.create("script").srcOf("js/jquery-3.7.1.min.js").up(body1)
+	Dim script2 As Tag = Html.create("script").srcOf("js/bootstrap.bundle.min.js").up(body1)
 	Dim script3 As Tag = Html.create("script").multiline.Text($"
 		$(document).ready(function() {
 	    	var toastElement = $("#liveToast")
@@ -265,6 +263,7 @@ Private Sub GrowTree2
 		        toast.show()
 		    })
 		})"$).up(body1)
+	
 	Dim doc As Document
 	doc.Initialize
 	doc.AppendDocType
@@ -273,44 +272,44 @@ Private Sub GrowTree2
 	Source = doc.ToString
 	
 	Tree.Clear
-	Dim ihtml As CLVTreeItem = AddTreeItem(Tree.Root, html1.Name, Null, html1)
-	Dim ihead As CLVTreeItem = AddTreeItem(ihtml, head1.Name, Null, head1)
-	For Each t1 As Tag In head1.Tags
-		'Log(t1.Name)
-		AddTreeItem(ihead, t1.Name, Null, t1)
+	Dim ihtml As CLVTreeItem = AddTreeItem(Tree.Root, html1.TagName, Null, html1)
+	Dim ihead As CLVTreeItem = AddTreeItem(ihtml, head1.TagName, Null, head1)
+	For Each t1 As Tag In head1.Children
+		'Log(t1.TagName)
+		AddTreeItem(ihead, t1.TagName, Null, t1)
 	Next
-	Dim ibody As CLVTreeItem = AddTreeItem(ihtml, body1.Name, Null, body1)
-	Dim idiv1 As CLVTreeItem = AddTreeItem(ibody, div1.Name, Null, div1)
+	Dim ibody As CLVTreeItem = AddTreeItem(ihtml, body1.TagName, Null, body1)
+	Dim idiv1 As CLVTreeItem = AddTreeItem(ibody, div1.TagName & $" [${div1.ClassesAsString}]"$, Null, div1)
 	
-	Dim idiv2 As CLVTreeItem = AddTreeItem(idiv1, div2.Name, Null, div2)
-	Dim idiv3 As CLVTreeItem = AddTreeItem(idiv2, div2.Name, Null, div2)
-	AddTreeItem(idiv3, div2.Name, Null, div2)
+	'Dim idiv2 As CLVTreeItem = AddTreeItem(idiv1, div2.TagName, Null, div2)
+	'Dim idiv3 As CLVTreeItem = AddTreeItem(idiv2, div2.TagName, Null, div2)
+	'AddTreeItem(idiv3, div2.TagName, Null, div2)
 	
-	Dim idiv2 As CLVTreeItem = AddTreeItem(idiv1, div2.Name, Null, div2)
-	Dim idiv3 As CLVTreeItem = AddTreeItem(idiv2, div2.Name, Null, div2)
-	AddTreeItem(idiv3, div2.Name, Null, div2)
+	'Dim idiv2 As CLVTreeItem = AddTreeItem(idiv1, div2.TagName, Null, div2)
+	'Dim idiv3 As CLVTreeItem = AddTreeItem(idiv2, div2.TagName, Null, div2)
+	'AddTreeItem(idiv3, div2.TagName, Null, div2)
 	
-	Dim idiv2 As CLVTreeItem = AddTreeItem(idiv1, div2.Name, Null, div2)
-	Dim idiv3 As CLVTreeItem = AddTreeItem(idiv2, div2.Name, Null, div2)
-	AddTreeItem(idiv3, div2.Name, Null, div2)
+	'Dim idiv2 As CLVTreeItem = AddTreeItem(idiv1, div2.TagName, Null, div2)
+	'Dim idiv3 As CLVTreeItem = AddTreeItem(idiv2, div2.TagName, Null, div2)
+	'AddTreeItem(idiv3, div2.TagName, Null, div2)
 	
-	Dim iform1 As CLVTreeItem = AddTreeItem(idiv1, form1.Name, Null, form1)
-	Dim idiv2 As CLVTreeItem = AddTreeItem(iform1, div2.Name, Null, div2)
-	AddTreeItem(idiv2, lbl1.Name, Null, lbl1)
-	AddTreeItem(idiv2, input1.Name, Null, input1)
-	AddTreeItem(idiv2, button1.Name, Null, button1)
+	Dim iform1 As CLVTreeItem = AddTreeItem(idiv1, form1.TagName, Null, form1)
+	Dim idiv2 As CLVTreeItem = AddTreeItem(iform1, div2.TagName & $" [${div2.ClassesAsString}]"$, Null, div2)
+	AddTreeItem(idiv2, lbl1.TagName & $" [${lbl1.ClassesAsString}]"$, Null, lbl1)
+	AddTreeItem(idiv2, input1.TagName & $" [${input1.ClassesAsString}]"$, Null, input1)
+	AddTreeItem(idiv2, button1.TagName & $" [${button1.ClassesAsString}]"$, Null, button1)
 	
-	Dim itoast1 As CLVTreeItem = AddTreeItem(ibody, toast1.Name, Null, toast1)
-	Dim iflex1 As Tag = toast1.innerTag(0)
-	Dim idiv2 As CLVTreeItem = AddTreeItem(itoast1, iflex1.Name, Null, iflex1)
-	For Each t1 As Tag In iflex1.Tags
-		'Log(t1.Name & " : " & t1.Parent)
-		AddTreeItem(idiv2, t1.Name, Null, t1)
+	Dim itoast1 As CLVTreeItem = AddTreeItem(ibody, toast1.TagName & $" [${toast1.ClassesAsString}]"$, Null, toast1)
+	Dim iflex1 As Tag = toast1.Child(0)
+	Dim idiv2 As CLVTreeItem = AddTreeItem(itoast1, iflex1.TagName & $" [${iflex1.ClassesAsString}]"$, Null, iflex1)
+	For Each t1 As Tag In iflex1.Children
+		'Log(t1.TagName & " : " & t1.Parent)
+		AddTreeItem(idiv2, t1.TagName & $" [${t1.ClassesAsString}]"$, Null, t1)
 	Next
 	
-	AddTreeItem(ibody, script1.Name, Null, script1)
-	AddTreeItem(ibody, script2.Name, Null, script2)
-	AddTreeItem(ibody, script3.Name, Null, script3)
+	AddTreeItem(ibody, script1.TagName, Null, script1)
+	AddTreeItem(ibody, script2.TagName, Null, script2)
+	AddTreeItem(ibody, script3.TagName, Null, script3)
 	'Tree.Refresh
 End Sub
 
@@ -342,43 +341,43 @@ Public Sub GetLabelColor (Tag1 As Object) As Int
 	End Select
 End Sub
 
-Sub ConvertTagNodeToTag (node1 As HtmlNode) As Tag
-	Dim parent As Tag
-	If node1.Name = "root" Then
-		For Each child As HtmlNode In node1.Children
-			If child.Name = "text" Then Continue
-			node1 = child
-			parent.Initialize(node1.Name)
-		Next
-	Else
-		parent.Initialize(node1.Name)
-	End If
-
-	If node1.Name = "text" Then
-		Dim value As String = HtmlParser.GetAttributeValue(node1, "value", "").Trim
-		If value.Length > 0 Then
-			parent.Text(value)
-			Return parent
-		End If
-	End If
-	For Each att As HtmlAttribute In node1.Attributes
-		parent.attribute(att.Key, att.Value)
-	Next
-	For Each child As HtmlNode In node1.Children
-		If child.Name = "text" Then
-			Dim value As String = HtmlParser.GetAttributeValue(child, "value", "").Trim
-			'Log($"[${value}]"$)
-			If value.Length > 0 Then
-				parent.Text(value)
-			End If
-			Continue
-		End If
-		Dim tag2 As Tag = ConvertTagNodeToTag(child)
-		parent.add(tag2)
-	Next
-	'Log(parent.build)
-	Return parent
-End Sub
+'Sub ConvertTagNodeToTag (node1 As HtmlNode) As Tag
+'	Dim parent As Tag
+'	If node1.Name = "root" Then
+'		For Each child As HtmlNode In node1.Children
+'			If child.Name = "text" Then Continue
+'			node1 = child
+'			parent.Initialize(node1.Name)
+'		Next
+'	Else
+'		parent.Initialize(node1.Name)
+'	End If
+'
+'	If node1.Name = "text" Then
+'		Dim value As String = HtmlParser.GetAttributeValue(node1, "value", "").Trim
+'		If value.Length > 0 Then
+'			parent.Text(value)
+'			Return parent
+'		End If
+'	End If
+'	For Each att As HtmlAttribute In node1.Attributes
+'		parent.attr(att.Key, att.Value)
+'	Next
+'	For Each child As HtmlNode In node1.Children
+'		If child.Name = "text" Then
+'			Dim value As String = HtmlParser.GetAttributeValue(child, "value", "").Trim
+'			'Log($"[${value}]"$)
+'			If value.Length > 0 Then
+'				parent.Text(value)
+'			End If
+'			Continue
+'		End If
+'		Dim tag2 As Tag = ConvertTagNodeToTag(child)
+'		parent.add(tag2)
+'	Next
+'	'Log(parent.build)
+'	Return parent
+'End Sub
 
 'Sub TestOutput
 '	Source = "<!doctype html>"
@@ -402,13 +401,13 @@ Private Sub TreeToItems (ParentTreeNode As CLVTreeItem, ParentList As List)
 		Dim h As Tag = child.Tag
 		
 		'Dim OpenTag As String = h.HtmlTag.As(String)
-		Dim OpenTag As String = $"<${h.Name}>"$
+		Dim OpenTag As String = $"<${h.TagName}>"$
 		Dim CloseTag As String = OpenTag.Replace("<", "</")
 		'If h.Attributes.IsInitialized Then ' And h.Attributes.Size > 0 Then
 		'	Dim Attributes As String
 		'	For Each ha As HtmlAttribute In h.Attributes
 		'		Dim newValue As String = ha.Value.As(String).Replace("{", "").Replace("}", "")
-		'		Attributes = Attributes &  $" ${ha.Name}="${newValue}""$
+		'		Attributes = Attributes &  $" ${ha.TagName}="${newValue}""$
 		'	Next
 		'	OpenTag = OpenTag.Replace(">", Attributes & ">")
 		'End If
@@ -553,7 +552,7 @@ Private Sub CustomListView1_ItemClick (Index As Int, Value As Object)
 	Data.Initialize
 	'Dim element As HtmlElement = item.Tag
 	Dim element As Tag = item.Tag
-	PD1.Initialize(PnlProperties, element.Name, PnlProperties.Width, PnlProperties.Height)
+	PD1.Initialize(PnlProperties, element.TagName, PnlProperties.Width, PnlProperties.Height)
 
 	If element.Attributes.IsInitialized Then
 		If element.innerText.Length > 0 Then
@@ -569,8 +568,8 @@ Private Sub CustomListView1_ItemClick (Index As Int, Value As Object)
 		'Dim Data As Map = CreateMap()
 		'For Each AttributeItem As HtmlAttribute In AttributeList
 		'	'Log(AttributeItem)
-		'	PD1.AddTextItem(AttributeItem.Name, AttributeItem.Name)
-		'	Data.Put(AttributeItem.Name, AttributeItem.Value)
+		'	PD1.AddTextItem(AttributeItem.TagName, AttributeItem.TagName)
+		'	Data.Put(AttributeItem.TagName, AttributeItem.Value)
 		'Next
 		Dim Attributes As Map = element.Attributes
 		For Each Key As String In Attributes.keys
@@ -638,7 +637,7 @@ End Sub
 'Public Sub CreateHtmlAttribute (Name As String, Value As Object) As HtmlAttribute
 '	Dim t1 As HtmlAttribute
 '	t1.Initialize
-'	t1.Name = Name
+'	t1.TagName = Name
 '	t1.Value = Value
 '	Return t1
 'End Sub

@@ -253,7 +253,7 @@ Private Sub UpdateItemUI (Item As CLVTreeItem)
 	lbl.Left = indent + 65dip
 	lbl.Width = pnl.Width - lbl.Left
 	lbl.Font = xui.CreateDefaultFont(lbl.Font.Size)
-	lbl.TextColor = B4XPages.MainPage.GetLabelColor(Item.Text)
+	lbl.TextColor = B4XPages.MainPage.GetLabelColor(Item.Tag.As(Tag).TagName)
 	
 '	Dim btn1 As B4XView = pnl.GetView(DRAGGER_INDEX)
 '	btn1.Left = lbl.Width - 100dip
